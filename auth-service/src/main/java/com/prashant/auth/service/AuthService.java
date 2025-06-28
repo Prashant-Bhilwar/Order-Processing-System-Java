@@ -51,4 +51,8 @@ public class AuthService {
         refreshTokenService.saveRefreshToken(user.getEmail(), refreshToken, jwtService.getRefreshTokenExpiration());
         return new AuthResponse(accessToken,refreshToken);
     }
+
+    public void logout(String email){
+        refreshTokenService.deleteRefreshToken(email);
+    }
 }
