@@ -55,4 +55,21 @@ public class AuthService {
     public void logout(String email){
         refreshTokenService.deleteRefreshToken(email);
     }
+
+    public AuthResponse refreshToken(String refreshToken){
+        String email = jwtService.extractUsername(refreshToken);
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Validate the refresh token via JWT and Redis
+        if (!jwtService.isTokenValid(refreshToken, user) || !refreshTokenService.isRefreshTokenValid(email, refreshToken)) {
+            throw new RuntimeException("Invalid refresh token");
+        }
+
+        String newAccessToken = jwtService.generateAccessToken(user);
+        String newRefreshToken = jwtService.generateRefreshToken(user);
+        refreshTokenService.saveRefreshToken(email,newRefreshToken, jwtService.getRefreshTokenExpiration());
+
+        return new AuthResponse(newAccessToken, newRefreshToken);
+    }
 }
