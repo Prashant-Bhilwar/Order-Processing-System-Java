@@ -16,6 +16,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private  final RefreshTokenService refreshTokenService;
 
     public AuthResponse register(RegisterRequest request){
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -32,6 +33,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
+        refreshTokenService.saveRefreshToken(user.getEmail(), refreshToken, jwtService.getRefreshTokenExpiration());
         return new AuthResponse(accessToken,refreshToken);
     }
 
@@ -46,6 +48,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
+        refreshTokenService.saveRefreshToken(user.getEmail(), refreshToken, jwtService.getRefreshTokenExpiration());
         return new AuthResponse(accessToken,refreshToken);
     }
 }
