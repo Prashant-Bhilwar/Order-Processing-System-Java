@@ -74,7 +74,7 @@ public class AuthController {
 
         String token = authHeader.substring(7);
         String email = jwtService.extractUsername(token);
-        authService.logout(email);
+        authService.logout(email, token);
 
         return ResponseEntity.ok("Logged out successfully");
     }

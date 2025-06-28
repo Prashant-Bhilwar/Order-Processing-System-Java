@@ -52,8 +52,8 @@ public class AuthService {
         return new AuthResponse(accessToken,refreshToken);
     }
 
-    public void logout(String email){
-        refreshTokenService.deleteRefreshToken(email);
+    public void logout(String email, String token){
+        refreshTokenService.deleteRefreshToken(email, token);
     }
 
     public AuthResponse refreshToken(String refreshToken){

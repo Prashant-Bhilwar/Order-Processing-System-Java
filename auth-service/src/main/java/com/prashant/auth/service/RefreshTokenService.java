@@ -28,7 +28,11 @@ public class RefreshTokenService {
         return storedToken != null && storedToken.equals(refreshToken);
     }
 
-    public void deleteRefreshToken(String email) {
+    public void deleteRefreshToken(String email, String token) {
+        String storedToken = redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + email);
+        if(!token.equals(storedToken)){
+            throw new RuntimeException("Invalid or outdated token");
+        }
         redisTemplate.delete(REFRESH_TOKEN_PREFIX + email);
     }
 }

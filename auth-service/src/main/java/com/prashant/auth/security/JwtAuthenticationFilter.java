@@ -30,9 +30,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
         final String tokenPrefix = "Bearer ";
+        final String path = request.getServletPath();
         String jwt;
 
-        if(authHeader == null || !authHeader.startsWith(tokenPrefix)){
+        if(authHeader == null || !authHeader.startsWith(tokenPrefix) || path.equals("/api/auth/register") || path.equals("/api/auth/login") ){
             filterChain.doFilter(request,response);
             return;
         }
