@@ -10,6 +10,7 @@
 
     <modules>
         <module>auth-service</module>
+        <module>product-service</module>
     </modules>
 
     <parent>
