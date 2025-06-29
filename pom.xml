@@ -12,6 +12,12 @@
         <module>auth-service</module>
         <module>product-service</module>
     </modules>
+    <dependencies>
+
+
+
+
+    </dependencies>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
