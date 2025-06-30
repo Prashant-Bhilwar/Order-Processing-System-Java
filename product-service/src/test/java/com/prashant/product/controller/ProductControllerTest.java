@@ -67,7 +67,7 @@ public class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                         {
-                            "id": 1L,
+                            "id": 1,
                             "name": "iPhone 14",
                             "description": "Apple flagship",
                             "price": 999.99,
