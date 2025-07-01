@@ -1,6 +1,6 @@
 package com.prashant.order.service;
 
-import com.prashant.order.client.ProductClient;
+import com.prashant.order.client.ProductRestClient;
 import com.prashant.order.dto.OrderRequest;
 import com.prashant.order.dto.OrderResponse;
 import com.prashant.order.dto.ProductDto;
@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductClient productClient;
+    private final ProductRestClient productClient;
 
     public OrderResponse placeOrder(OrderRequest request, String email) {
         ProductDto product = productClient.getProductById(request.getProductId());
