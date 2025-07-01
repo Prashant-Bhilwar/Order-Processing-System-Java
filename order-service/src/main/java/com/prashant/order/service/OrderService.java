@@ -5,8 +5,11 @@ import com.prashant.order.dto.OrderRequest;
 import com.prashant.order.dto.OrderResponse;
 import com.prashant.order.dto.ProductDto;
 import com.prashant.order.entity.Order;
+import com.prashant.order.event.OrderCreatedEvent;
+import com.prashant.order.event.RabbitMQProducer;
 import com.prashant.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,6 +22,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRestClient productClient;
+    private final RabbitMQProducer rabbitMQProducer;
 
     public OrderResponse placeOrder(OrderRequest request, String email) {
         ProductDto product = productClient.getProductById(request.getProductId());
@@ -34,6 +38,17 @@ public class OrderService {
                 .build();
 
         Order saved = orderRepository.save(order);
+
+        rabbitMQProducer.publish(
+                OrderCreatedEvent.builder()
+                        .orderId(saved.getId())
+                        .userId(saved.getUserId())
+                        .productId(saved.getProductId())
+                        .quantity(saved.getQuantity())
+                        .totalAmount(saved.getTotalAmount())
+                        .createdAt(saved.getCreatedAt())
+                        .build()
+        );
 
         return mapToResponse(saved);
     }

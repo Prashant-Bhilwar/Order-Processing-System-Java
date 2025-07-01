@@ -18,6 +18,13 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
+    username: guest
+    password: guest
+
+rabbitmq:
+  exchange: order.exchange
+  routing-key: order.created
+  queue: order.queue
 
 jwt:
   secret: my_secret_key_for_generating_jwt
