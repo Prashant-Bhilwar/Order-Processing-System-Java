@@ -59,4 +59,14 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Get product by ID for internal services")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product found"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
+    @GetMapping("/internal/{id}")
+    public ResponseEntity<ProductResponse> getProductForInternal(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductById(id));
+    }
 }
